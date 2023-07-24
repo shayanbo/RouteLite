@@ -31,7 +31,7 @@ class Router {
         return content(routerURLInfo)
     }
     
-    func register(_ path: String, content: @escaping (RouterURLInfo)-> Result) throws {
+    func register(_ path: String, content: @escaping (RouterURLInfo)-> Result) {
         guard routes[path] == nil else {
             fatalError("Router has been registered [\(path)]")
         }
