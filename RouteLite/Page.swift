@@ -24,15 +24,21 @@ struct Cell : View {
     }
 }
 
-struct Page1: View {
+struct Page: View {
     
     @EnvironmentObject var navigation: Navigation
     
+    let title: String
+    let linkTitle: String
+    let url: String
+    
+    @State var text = ""
+    
     var body: some View {
         Form {
-            Cell("Go To Page2")
+            Cell(linkTitle)
                 .onTapGesture {
-                    navigation.process("page2")
+                    navigation.process(url)
                 }
             Cell("Pop")
                 .onTapGesture {
@@ -46,61 +52,13 @@ struct Page1: View {
                 .onTapGesture {
                     navigation.popTo(2)
                 }
+            HStack {
+                TextField("type in URL here...", text: $text)
+                Button("GO") {
+                    navigation.process(text)
+                }.buttonStyle(.borderedProminent)
+            }
         }
-        .navigationBarTitle("Page1")
-    }
-}
-
-struct Page2: View {
-    
-    @EnvironmentObject var navigation: Navigation
-    
-    var body: some View {
-        Form {
-            Cell("Go To Page3")
-                .onTapGesture {
-                    navigation.process("page3")
-                }
-            Cell("Pop")
-                .onTapGesture {
-                    navigation.pop()
-                }
-            Cell("Pop To Root")
-                .onTapGesture {
-                    navigation.popToRoot()
-                }
-            Cell("Pop Twice")
-                .onTapGesture {
-                    navigation.popTo(2)
-                }
-        }
-        .navigationBarTitle("Page2")
-    }
-}
-
-struct Page3: View {
-    
-    @EnvironmentObject var navigation: Navigation
-    
-    var body: some View {
-        Form {
-            Cell("Go To Page1")
-                .onTapGesture {
-                    navigation.process("page1")
-                }
-            Cell("Pop")
-                .onTapGesture {
-                    navigation.pop()
-                }
-            Cell("Pop To Root")
-                .onTapGesture {
-                    navigation.popToRoot()
-                }
-            Cell("Pop Twice")
-                .onTapGesture {
-                    navigation.popTo(2)
-                }
-        }
-        .navigationBarTitle("Page3")
+        .navigationBarTitle(title)
     }
 }
