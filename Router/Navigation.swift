@@ -34,12 +34,22 @@ extension Navigation {
     }
 }
 
+fileprivate struct RoutePath : Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(path)
+    }
+    
+    static func == (lhs: RoutePath, rhs: RoutePath) -> Bool {
+        lhs.path == rhs.path
+    }
+    
+    let path: String
+    let resolvedView: any View
+}
+
 /// Router
 extension Navigation {
-    
-    fileprivate struct RoutePath : Hashable {
-        let path: String
-    }
     
     func process(_ p: String) {
         
@@ -50,8 +60,8 @@ extension Navigation {
         case .none: return
         case .forward(let path):
             return process(path)
-        case .target(_):
-            path.append(RoutePath(path: p))
+        case .target(let view):
+            path.append(RoutePath(path: p, resolvedView: view))
         }
     }
 }
@@ -59,12 +69,8 @@ extension Navigation {
 //IMPORTANT: called by the root view of NavigationStack
 extension View {
     func enableRouter(_ router: Router = .shared) -> some View {
-        navigationDestination(for: Navigation.RoutePath.self) { routePath in
-            if let result = try? router.resolve(routePath.path) {
-                if case let .target(view) = result {
-                    AnyView(view)
-                }
-            }
+        navigationDestination(for: RoutePath.self) { routePath in
+            AnyView(routePath.resolvedView)
         }
     }
 }
