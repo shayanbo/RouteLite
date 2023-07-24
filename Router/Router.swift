@@ -10,8 +10,6 @@ import SwiftUI
 
 class Router {
     
-    typealias Target = any View
-    
     enum Result {
         case none
         case target(any View)
@@ -33,7 +31,10 @@ class Router {
         return content(routerURLInfo)
     }
     
-    func register(_ path: String, content: @escaping (RouterURLInfo)-> Result) {
+    func register(_ path: String, content: @escaping (RouterURLInfo)-> Result) throws {
+        guard routes[path] == nil else {
+            fatalError("Router has been registered [\(path)]")
+        }
         routes[path] = content
     }
 }
