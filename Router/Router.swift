@@ -8,19 +8,29 @@
 import Foundation
 import SwiftUI
 
-class Router {
+public class Router {
     
-    enum Result {
+    public enum Result {
         case none
         case target(any View)
         case forward(String)
     }
     
-    static let shared = Router()
+    public static let shared = Router()
+    
+    fileprivate var storage = Storage()
     
     fileprivate var routes = [String: (RouterURLInfo)-> Result]()
     
-    func resolve(_ path: String) throws -> Result {
+    fileprivate var transfers = [String: (String)->String]()
+    
+    public func resolve(_ path: String) throws -> Result {
+        
+        var path = path
+        
+        if path.hasPrefix("http") || path.hasPrefix("https") {
+            path = transfer(path)
+        }
         
         let routerURLInfo = try parse(path)
         
@@ -31,7 +41,7 @@ class Router {
         return content(routerURLInfo)
     }
     
-    func register(_ path: String, content: @escaping (RouterURLInfo)-> Result) {
+    public func register(_ path: String, content: @escaping (RouterURLInfo)-> Result) {
         guard routes[path] == nil else {
             fatalError("Router has been registered [\(path)]")
         }
@@ -39,7 +49,7 @@ class Router {
     }
 }
 
-extension Router {
+public extension Router {
     
     enum Error: Swift.Error {
         case invalidateUrl
@@ -47,14 +57,37 @@ extension Router {
     }
 }
 
-extension Router {
+public extension Router {
     
-    struct RouterURLInfo {
-        let path: String
-        let params: [String:String]
+    func registerHttpTransfer(_ host: String, transfer: @escaping (String)->String) {
+        guard transfers[host] == nil else {
+            fatalError("Transfer has been registered [\(host)]")
+        }
+        transfers[host] = transfer
     }
     
-    func parse(_ path: String) throws -> RouterURLInfo {
+    fileprivate func transfer(_ url: String) -> String {
+        guard let components = URLComponents(string: url) else {
+            return url
+        }
+        guard let host = components.host else {
+            return url
+        }
+        guard let transferTask = transfers[host] else {
+            return url
+        }
+        return transferTask(url)
+    }
+}
+
+extension Router {
+    
+    public struct RouterURLInfo {
+        public let path: String
+        public let params: [String:String]
+    }
+    
+    fileprivate func parse(_ path: String) throws -> RouterURLInfo {
         guard let url = URL(string: path) else {
             throw Error.invalidateUrl
         }

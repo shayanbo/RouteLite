@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D47223512A6EAFD900B19F0A /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47223502A6EAFD900B19F0A /* Router.swift */; };
 		D472235D2A6EB12400B19F0A /* Router.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D47223572A6EB12400B19F0A /* Router.framework */; };
 		D472235E2A6EB12400B19F0A /* Router.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D47223572A6EB12400B19F0A /* Router.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D4A8FC1D2A6E86E000DBE29E /* RouteLiteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A8FC1C2A6E86E000DBE29E /* RouteLiteApp.swift */; };
@@ -15,7 +14,9 @@
 		D4A8FC212A6E86E100DBE29E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4A8FC202A6E86E100DBE29E /* Assets.xcassets */; };
 		D4A8FC242A6E86E100DBE29E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4A8FC232A6E86E100DBE29E /* Preview Assets.xcassets */; };
 		D4A8FC2C2A6E871600DBE29E /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A8FC2A2A6E871600DBE29E /* Page.swift */; };
-		D4A8FC2D2A6E871600DBE29E /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A8FC2B2A6E871600DBE29E /* Navigation.swift */; };
+		D4C8CCE22A6F638600F2D6C5 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C8CCE12A6F638600F2D6C5 /* Storage.swift */; };
+		D4C8CCE32A6F63F000F2D6C5 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A8FC2B2A6E871600DBE29E /* Navigation.swift */; };
+		D4C8CCE42A6F63F000F2D6C5 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47223502A6EAFD900B19F0A /* Router.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		D4A8FC232A6E86E100DBE29E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D4A8FC2A2A6E871600DBE29E /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		D4A8FC2B2A6E871600DBE29E /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
+		D4C8CCE12A6F638600F2D6C5 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			children = (
 				D4A8FC2B2A6E871600DBE29E /* Navigation.swift */,
 				D47223502A6EAFD900B19F0A /* Router.swift */,
+				D4C8CCE12A6F638600F2D6C5 /* Storage.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				TargetAttributes = {
 					D47223562A6EB12400B19F0A = {
 						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1430;
 					};
 					D4A8FC182A6E86E000DBE29E = {
 						CreatedOnToolsVersion = 14.1;
@@ -231,6 +235,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4C8CCE32A6F63F000F2D6C5 /* Navigation.swift in Sources */,
+				D4C8CCE42A6F63F000F2D6C5 /* Router.swift in Sources */,
+				D4C8CCE22A6F638600F2D6C5 /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,9 +247,7 @@
 			files = (
 				D4A8FC1F2A6E86E000DBE29E /* ContentView.swift in Sources */,
 				D4A8FC1D2A6E86E000DBE29E /* RouteLiteApp.swift in Sources */,
-				D47223512A6EAFD900B19F0A /* Router.swift in Sources */,
 				D4A8FC2C2A6E871600DBE29E /* Page.swift in Sources */,
-				D4A8FC2D2A6E871600DBE29E /* Navigation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +265,7 @@
 		D47223602A6EB12400B19F0A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -271,7 +277,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -284,6 +290,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -294,6 +301,7 @@
 		D47223612A6EB12400B19F0A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -305,7 +313,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -442,6 +450,7 @@
 		D4A8FC282A6E86E100DBE29E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -471,6 +480,7 @@
 		D4A8FC292A6E86E100DBE29E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;

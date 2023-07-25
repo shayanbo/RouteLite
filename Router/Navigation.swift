@@ -9,27 +9,30 @@ import Foundation
 import SwiftUI
 
 public class Navigation : ObservableObject {
+    
     @Published public var path = NavigationPath()
+    
+    public init() { }
 }
 
 /// NavigationController
-extension Navigation {
+public extension Navigation {
     
-    public func push<Data>(_ data: Data) where Data :  Hashable {
+    func push<Data>(_ data: Data) where Data :  Hashable {
         path.append(data)
     }
     
-    public func pop() {
+    func pop() {
         if !path.isEmpty {
             path.removeLast()
         }
     }
     
-    public func popTo(_ count: Int) {
+    func popTo(_ count: Int) {
         path.removeLast(count)
     }
     
-    public func popToRoot() {
+    func popToRoot() {
         path.removeLast(path.count)
     }
 }
@@ -49,7 +52,7 @@ fileprivate struct RoutePath : Hashable {
 }
 
 /// Router
-extension Navigation {
+public extension Navigation {
     
     func process(_ p: String) {
         
@@ -67,7 +70,8 @@ extension Navigation {
 }
 
 //IMPORTANT: called by the root view of NavigationStack
-extension View {
+public extension View {
+    
     func enableRouter(_ router: Router = .shared) -> some View {
         navigationDestination(for: RoutePath.self) { routePath in
             AnyView(routePath.resolvedView)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Router
 
 struct ContentView: View {
     
@@ -46,6 +47,17 @@ struct ContentView: View {
                 } else {
                     return .none
                 }
+            }
+            Router.shared.registerHttpTransfer("www.bilibili.com") { path in
+                guard let components = URLComponents(string: path) else {
+                    return path
+                }
+                return "bilibili:/\(components.path)?\(components.query ?? "")"
+            }
+            Router.shared.register("bilibili://live/id") { _ in
+                .target(
+                    Page(title: "Page3", linkTitle: "Go To Page1", url: "page1")
+                )
             }
         }
     }
