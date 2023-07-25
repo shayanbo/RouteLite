@@ -28,7 +28,7 @@ public extension Navigation {
         }
     }
     
-    func popTo(_ count: Int) {
+    func pop(count: Int) {
         path.removeLast(count)
     }
     

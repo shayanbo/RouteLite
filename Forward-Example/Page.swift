@@ -51,7 +51,7 @@ struct Page: View {
                 }
             Cell("Pop Twice")
                 .onTapGesture {
-                    navigation.popTo(2)
+                    navigation.pop(count: 2)
                 }
             HStack {
                 TextField("type in URL here...", text: $text)
