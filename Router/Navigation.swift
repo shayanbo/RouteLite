@@ -72,10 +72,22 @@ public extension Navigation {
 //IMPORTANT: called by the root view of NavigationStack
 public extension View {
     
-    func enableRouter(_ router: Router = .shared) -> some View {
+    func enableRouter() -> some View {
         navigationDestination(for: RoutePath.self) { routePath in
             AnyView(routePath.resolvedView)
         }
     }
 }
 
+public struct RouterMatchedView : View {
+    
+    private let path: String
+    
+    public init(_ path: String) {
+        self.path = path
+    }
+    
+    public var body: some View {
+        Router.shared.match(path)
+    }
+}

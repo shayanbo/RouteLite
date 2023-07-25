@@ -12,17 +12,28 @@ public class Router {
     
     public enum Result {
         case none
-        case target(any View)
+        case target(AnyView)
         case forward(String)
     }
     
     public static let shared = Router()
     
-    fileprivate var storage = Storage()
-    
     fileprivate var routes = [String: (RouterURLInfo)-> Result]()
     
     fileprivate var transfers = [String: (String)->String]()
+    
+    public func match(_ path: String) -> AnyView? {
+        guard let result = try? resolve(path) else {
+            return nil
+        }
+        switch result {
+        case .none: return nil
+        case .forward(let path):
+            return match(path)
+        case .target(let view):
+            return view
+        }
+    }
     
     public func resolve(_ path: String) throws -> Result {
         
@@ -34,7 +45,7 @@ public class Router {
         
         let routerURLInfo = try parse(path)
         
-        guard let content = routes[routerURLInfo.path] else {
+        guard let content = lookup(routerURLInfo.path) else {
             throw Error.notRegistered
         }
         
@@ -46,6 +57,57 @@ public class Router {
             fatalError("Router has been registered [\(path)]")
         }
         routes[path] = content
+    }
+    
+    public func register(_ path: String, content: @escaping (RouterURLInfo)->String) {
+        register(path) {
+            .forward(
+                content($0)
+            )
+        }
+    }
+    
+    public func register(_ path: String, content: @escaping (RouterURLInfo)->some View) {
+        register(path) {
+            .target(
+                AnyView(content($0))
+            )
+        }
+    }
+    
+    private func lookup(_ path: String) -> ((RouterURLInfo)-> Result)? {
+        if let content = routes[path] {
+            return content
+        }
+        
+        let lookupComponents = path.components(separatedBy: "/")
+        
+        let key = routes.keys.filter { rulePath in
+            rulePath.components(separatedBy:"/").contains { component in
+                component.hasSuffix("}") || component.hasPrefix("{")
+            }
+        }.first { fuzzyPath in
+            let fuzzyComponents = fuzzyPath.components(separatedBy: "/")
+            if fuzzyComponents.count != lookupComponents.count {
+                return false
+            }
+            for i in 0..<fuzzyComponents.count {
+                let lookupComponent = lookupComponents[i]
+                let fuzzyComponent = fuzzyComponents[i]
+                if !fuzzyComponent.hasPrefix("{") && !fuzzyComponent.hasSuffix("}") {
+                    if fuzzyComponent != lookupComponent {
+                        return false
+                    }
+                }
+            }
+            return true
+        }
+        
+        guard let key = key else {
+            return nil
+        }
+        
+        return routes[key]
     }
 }
 
@@ -74,7 +136,11 @@ public extension Router {
             return url
         }
         guard let transferTask = transfers[host] else {
-            return url
+            if let defaultTask = transfers["*"] {
+                return defaultTask(url)
+            } else {
+                return url
+            }
         }
         return transferTask(url)
     }
