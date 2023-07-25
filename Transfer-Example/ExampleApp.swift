@@ -34,7 +34,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                 return originalUrl
             }
             if components.path == "/watch" {
-                if let videoId = components.queryItems?.first.value {
+                if let videoId = components.queryItems?.first?.value {
                     return "youtube://video/\(videoId)"
                 }
             }

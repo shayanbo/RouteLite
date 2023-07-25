@@ -9,13 +9,17 @@ import SwiftUI
 import Router
 
 struct ContentView: View {
+    
+    @StateObject var navigation = Navigation()
+    
     var body: some View {
-        VStack {
-            Button("https://www.youtube.com/watch?v=n4vJ_0B5ssc") {
-                
+        
+        NavigationStack(path: $navigation.path) {
+            Button("Youtube Video: n4vJ_0B5ssc") {
+                navigation.process("https://www.youtube.com/watch?v=n4vJ_0B5ssc")
             }
+            .enableRouter()
         }
-        .padding()
     }
 }
 
